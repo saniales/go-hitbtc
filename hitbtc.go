@@ -117,7 +117,24 @@ func (b *HitBtc) GetTicker(market string) (ticker Ticker, err error) {
 	return
 }
 
-// GetAllTicker is used to get the current ticker values for all markets.
+// GetOrderbook is used to get the current order book for a market.
+func (b *HitBtc) GetOrderbook(market string) (orderbook Orderbook, err error) {
+	r, err := b.client.do("GET", "public/orderbook/"+strings.ToUpper(market), nil, false)
+	if err != nil {
+		return
+	}
+	var response interface{}
+	if err = json.Unmarshal(r, &response); err != nil {
+		return
+	}
+	if err = handleErr(response); err != nil {
+		return
+	}
+	err = json.Unmarshal(r, &orderbook)
+	return
+}
+
+// GetTicker is used to get the current ticker values for all markets.
 func (b *HitBtc) GetAllTicker() (tickers []Ticker, err error) {
 	r, err := b.client.do("GET", "public/ticker", nil, false)
 	if err != nil {
