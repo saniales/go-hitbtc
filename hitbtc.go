@@ -290,7 +290,7 @@ func (b *HitBtc) PlaceOrder(requestOrder Order) (responseOrder Order, err error)
 	payload["quantity"] = fmt.Sprintf("%.8f", requestOrder.Quantity)
 	payload["price"] = fmt.Sprintf("%.8f", requestOrder.Price)
 
-	r, err := b.client.do("PUT", "order/"+requestOrder.ClientOrderId, payload, true)
+	r, err := b.client.do("POST", "order/"+requestOrder.ClientOrderId, payload, true)
 	if err != nil {
 		return
 	}
